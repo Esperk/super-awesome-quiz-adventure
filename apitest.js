@@ -7,7 +7,7 @@ var Game = require('./models/game');
 
 
 describe('Test quizmaster', function(){
-	it ('should just add a game or somethign', function(done){
+	it ('should just add a game or something', function(done){
 		request
 		.post(baseUrl + '/quizmaster/creategame/test')
 		.end(function (err, res) {

@@ -21,6 +21,10 @@ quizApp.controller("teamGameController", function($scope, $http, $location, $rou
         $location.path("team/" + mainService.currentPub + "/gameOver");
     });
 
+    socketProvider.restartGameListener(function(data){
+        $location.path("team/game/" + mainService.currentPub);
+    });
+
     $scope.showForm = true;
     $scope.hasSent = false;
 
