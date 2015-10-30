@@ -1,0 +1,18 @@
+<div class="w-section content">
+    <p>Category:&nbsp;{{stats.category}}</p>
+    <h1>Question {{stats.question_count}} of {{stats.maxquestions}}</h1>
+    <p>This is the question</p>
+    <h3>{{stats.question}}</h3>
+    <h4>Answer: {{stats.answer}} </h4>
+    <div class="div-with-margin">
+        <div class="w-row" ng-repeat="team in teams">
+            <div class="w-col w-col-6 w-col-small-6 w-col-tiny-6">
+                <div>{{team.name}}</div>
+            </div>
+            <div class="w-col w-col-6 w-col-small-6 w-col-tiny-6">
+                <img class="icon has_submitted" ng-show="team.currentanswer !== '' && team.editing === false" src="img/accept_icon.png">
+                <img class="icon has_submitted" ng-show="team.currentanswer === '' || team.editing === true" src="img/loading_spinner.gif">
+            </div>
+        </div>
+    </div>
+    <button class="w-button button" ng-click="closeQuestion()">Close question</button>

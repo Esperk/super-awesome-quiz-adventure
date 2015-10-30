@@ -1,0 +1,18 @@
+<div class="w-section content center">
+    <p>Please fill in your answer to the following question: </p>
+    <h3>{{currentQuestion}}</h3>
+    <div class="w-form">
+        <form ng-submit="submitAnswer()">
+            <div class="w-row">
+                <div class="w-col w-col-11 w-col-small-11 w-col-tiny-10">
+                    <input ng-disabled="hasSent" class="w-input form-input" id="pubname" type="text" placeholder="WHATS YOUR ANSWER?" name="answer" ng-model="ans.answer" required autofocus>
+                </div>
+                <div class="w-col w-col-1 w-col-small-1 w-col-tiny-2">
+                    <img style="cursor: pointer;" ng-click="editAnswer()" src="img/decline_icon.png">
+                </div>
+            </div>
+            <input ng-disabled="hasSent" class="w-button button" type="submit" value="Send answer">
+        </form>
+    </div>
+    <p ng-show="{{hasSent}}">Waiting for other players...</p>
+</div>

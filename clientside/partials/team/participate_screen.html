@@ -1,0 +1,27 @@
+<div class="w-section content">
+    <h1>Awesome quiz night</h1>
+    <p>Welcome team, after you start the game night, you will receive instructions how to set-up your awesome night!</p>
+    <div class="w-form">
+        <form ng-submit="teamSignUp()">
+            <input ng-show="showForm" class="w-input form-input" id="teamname" type="text" placeholder="WHATS YOUR TEAMNAME?" name="teamname" ng-model="team.teamName" required autofocus>
+            <!--          <input class="w-input form-input" id="password" type="password" placeholder="WHATS YOUR PASSWORD?" name="password" ng-model="pub.password"> -->
+            <div class="icon-wrapper" ng-hide="showForm || approved[0] || isDeclined[0]">
+                <img src="img/loading_spinner.gif">
+                <h3>Pending...</h3>
+            </div>
+            <div class="icon-wrapper" ng-show="approved[0] && isDeclined[0] === false">
+                <img src="img/accept_icon.png">
+                <h3>Accepted!</h3>
+                <p>Please wait for the quizmaster to setup the game...</p>
+            </div>
+            <div class="icon-wrapper" ng-show="isDeclined[0]">
+                <img src="img/decline_icon.png">
+                <h3>Sorry, you're declined by the quizmaster!</h3>
+            </div>
+            <button class="w-button button" ng-show="showForm">
+                <div ng-hide="loading">Participate</div>
+                <div ng-show="loading">Loading...</div>
+            </button>
+        </form>
+    </div>
+</div>

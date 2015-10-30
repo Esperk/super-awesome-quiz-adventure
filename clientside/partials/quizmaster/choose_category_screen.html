@@ -1,0 +1,12 @@
+<div class="w-section content">
+    <h1>Round {{stats.round}}:&nbsp;choose your category</h1>
+    <div class="w-form">
+        <form ng-submit="setCategory()">
+            <div class="w-radio" ng-repeat="category in categories">
+                <input class="w-radio-input" id="{{category.name}}" type="radio" name="category" value="{{category._id}}" ng-model="cat.selectedCategory" required="required">
+                <label class="w-form-label" for="{{category.name}}">{{category.name}}</label>
+            </div>
+            <button class="w-button button" type="submit">Start Round</button>
+        </form>
+    </div>
+</div>

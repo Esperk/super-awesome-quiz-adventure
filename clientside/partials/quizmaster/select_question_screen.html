@@ -1,0 +1,15 @@
+<div class="w-section content">
+    <h1>Question {{stats.question_count}} of {{stats.maxquestions}}</h1>
+    <div class="w-section content">
+        <h1>Select the question</h1>
+        <div class="w-form">
+            <form ng-submit="setQuestion()" required>
+                <div class="w-radio" ng-repeat="question in questions[0]">
+                    <input class="w-radio-input" id="{{question._id}}" type="radio" name="question" value="{{question._id}}" ng-model="ques.currentQuestion" required="required">
+                    <label class="w-form-label" for="{{question._id}}">{{question.question}}</label>
+                </div>
+                <button class="w-button button" type="submit">Set question</button>
+            </form>
+        </div>
+    </div>
+</div>

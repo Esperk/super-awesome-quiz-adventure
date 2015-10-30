@@ -1,0 +1,37 @@
+<div class="w-section content">
+    <p>Category:&nbsp;{{stats.category}}</p>
+    <h1>Question {{stats.question_count}} of {{stats.maxquestions}}</h1>
+    <div class="w-section content">
+        <h1>Select the correct answer to the question:</h1>
+        <br>
+        <div class="w-row">
+            <div class="w-col w-col-6">
+                <h2>{{stats.question}}</h2>
+                <h3>{{stats.answer}}</h3>
+            </div>
+            <div class="w-row">
+                <div class="w-col w-col-3 w-col-small-6 w-col-tiny-6">
+                    Team:
+                </div>
+                <div class="w-col w-col-3 w-col-small-6 w-col-tiny-6">
+                    Answer:
+                </div>
+            </div>
+            <div class="w-col w-col-6 checkboxcol" ng-repeat="team in teams">
+                <div class="w-row">
+                    <div class="w-col w-col-3 w-col-small-6 w-col-tiny-6">
+                        {{team.name}}
+                    </div>
+                    <div class="w-col w-col-6 w-col-small-6 w-col-tiny-6">
+                        <div class="w-checkbox">
+                            <input class="w-checkbox-input" id="checkbox" type="checkbox" name="team.name" ng-model="team.status" ng-click="sendCorrection(team)">
+                            <label class="w-form-label" for="team.name">&nbsp;&nbsp;&nbsp;&nbsp;{{team.currentanswer}}</label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <button class="w-button button" ng-click="submitAnswers()">Select a new question</button>
+        </div>
+    </div>
+</div>
+</div>

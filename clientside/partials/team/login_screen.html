@@ -1,0 +1,13 @@
+<div class="w-section content">
+    <h1>Awesome quiz night</h1>
+    <p>Welcome team, enter the pubname you want to participtate on!</p>
+    <div class="w-form">
+        <form ng-submit="enterPub()">
+            <input class="w-input form-input" id="pubname" type="text" placeholder="WHATS YOUR PUBNAME?" name="pubname" ng-model="pub.pubname" required autofocus>
+            <button class="w-button button">
+                <div ng-hide="loading">Enter pub!</div>
+                <div ng-show="loading">Loading...</div>
+            </button>
+        </form>
+    </div>
+</div>

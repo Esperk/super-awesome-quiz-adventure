@@ -1,0 +1,6 @@
+<h1>Participating teams</h1>
+<div class="div-with-margin" ng-repeat="team in teams">
+    <img ng-hide="team.selected" style="width: 25px;" src="img/loading_spinner.gif">
+    <img ng-show="team.selected" style="width: 25px;" src="img/accept_icon.png">
+    <span>{{team.name}}</span>
+</div>

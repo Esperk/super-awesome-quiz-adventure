@@ -1,0 +1,14 @@
+<div class="w-section content">
+    <h1>Awesome quiz night</h1>
+    <p>Welcome quiz master, after you start the game night, you will receive instructions how to set-up your awesome night!</p>
+    <div class="w-form">
+        <form id="email-form" ng-submit="startGame()">
+            <input class="w-input form-input" id="pubname" type="text" placeholder="WHATS YOUR PUBNAME?" name="pubname" ng-model="pub.pubname" required autofocus>
+            <!--          <input class="w-input form-input" id="password" type="password" placeholder="WHATS YOUR PASSWORD?" name="password" ng-model="pub.password"> -->
+            <button class="w-button button">
+                <div ng-hide="loading">Start game night!</div>
+                <div ng-show="loading">Loading...</div>
+            </button>
+        </form>
+    </div>
+</div>

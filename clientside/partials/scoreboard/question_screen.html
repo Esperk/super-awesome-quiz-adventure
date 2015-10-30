@@ -1,0 +1,18 @@
+<h1>Participating teams</h1>
+<h2>{{stats.question}}</h2>
+
+<div class="w-col w-col-12 w-col-small-12 w-col-tiny-12">
+	<p class="roundinfo">Round {{stats.round}} of {{stats.maxrounds}}</p>
+	<p class="roundinfo" style="clear:both;">Question {{stats.question_count}} of {{stats.maxquestions}}</p>
+</div>
+<div class="div-with-margin">
+    <div class="w-row" ng-repeat="team in teams">
+        <div class="w-col w-col-6 w-col-small-6 w-col-tiny-6">
+            <div>{{team.name}}</div>
+        </div>
+        <div class="w-col w-col-6 w-col-small-6 w-col-tiny-6">
+            <img class="icon has_submitted" ng-show="team.currentanswer !== '' && team.editing === false" src="img/accept_icon.png">
+            <img class="icon has_submitted" ng-show="team.currentanswer === '' || team.editing === true" src="img/loading_spinner.gif">
+        </div>
+    </div>
+</div>

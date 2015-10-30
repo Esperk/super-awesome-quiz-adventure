@@ -1,0 +1,23 @@
+<div class="w-section content">
+    <h1>Step 1. Set up your scoreboard</h1>
+    <p>On you pc, which is connected to a beamer or television, go to www.quiznight.com/</p>
+    <h1>Step 2. Pick teams</h1>
+    <p>Instructions will be shown on the scoreboard.</p>
+    <div class="w-form">
+        <h1>Step 3. Approve/decline teams below.</h1>
+        <div class="div-with-margin">
+            <div class="w-row" ng-repeat="team in teams">
+                <div class="checkboxcol">
+                    <div class="w-checkbox">
+                        <input class="w-checkbox-input" id="{{team.id}}" type="checkbox" name="checkbox" ng-model="team.selected" ng-click="sendTeamApproval(team)">
+                        <label class="w-form-label" for="{{team.id}}">&nbsp;&nbsp;&nbsp;&nbsp;{{team.name}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="icon-wrapper">
+                <img src="img/loading_spinner.gif">
+            </div>
+        </div>
+        <button class="w-button button" ng-click="approveAndStartGame()">Start game night!</button>
+    </div>
+</div>

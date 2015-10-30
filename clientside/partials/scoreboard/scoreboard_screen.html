@@ -1,0 +1,26 @@
+<div class="w-section content">
+    <h1>Awesome quiz night</h1>
+    <p>Welcome! This is the scoreboard of {{currentPub}}!</p>
+    <div class="w-col w-col-12 w-col-small-12 w-col-tiny-12">
+        <p class="roundinfo">Round {{stats.round}} of {{stats.maxrounds}}</p>
+        <p class="roundinfo" style="clear:both;">Question {{stats.question_count}} of {{stats.maxquestions}}</p>
+    </div>
+    <h2></h2>
+    <table class="scoreboard" ng-show="stats.round >= 1">
+        <thead>
+            <tr>
+                <th>Team</th>
+                <th ng-repeat="(key, value) in teams[0].rounds">Score round {{key}}</th>
+                <th>Final round points</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="team in teams | orderBy:'-roundpoints'">
+                <td>{{team.name}}</td>
+                <th ng-repeat="(key, value) in team.rounds">{{value.correctanswers}}</th>
+                <td>{{team.roundpoints}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <p>Waiting for quiz master to start the next round...</p>
+</div>
