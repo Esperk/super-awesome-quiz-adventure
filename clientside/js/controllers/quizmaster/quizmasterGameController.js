@@ -1,19 +1,19 @@
-quizApp.controller("quizmasterGameController", function($scope, $http, $location, $routeParams, $timeout, socketProvider, mainService, noticeService) {
+quizApp.controller("quizmasterGameController", function($scope, $http, $location, $routeParams, $timeout, socketService, mainService, noticeService) {
     
 
-    socketProvider.categoryListener(function(data){
+    socketService.categoryListener(function(data){
         $location.path("quizmaster/" + mainService.currentPub + "/chooseCategory");
     });
 
-    socketProvider.questionListener(function(data){
+    socketService.questionListener(function(data){
         $location.path("quizmaster/" + mainService.currentPub + "/selectQuestion");
     });
 
-    socketProvider.gameOverListener(function(data){
+    socketService.gameOverListener(function(data){
         $location.path("quizmaster/" + mainService.currentPub + "/gameOver");
     });
 
-    socketProvider.restartGameListener(function(data){
+    socketService.restartGameListener(function(data){
         $location.path('/quizmaster/'+mainService.currentPub+'/setupGame/');
     });
 
@@ -42,29 +42,29 @@ quizApp.controller("quizmasterGameController", function($scope, $http, $location
     // SETUP A NEW ROUND || START WITH CHOOSING A CATEGORY
     $scope.setCategory = function() {
         mainService.currentCategory = $scope.cat.selectedCategory;
-        socketProvider.setCategory(mainService.currentPub, mainService.currentCategory);
+        socketService.setCategory(mainService.currentPub, mainService.currentCategory);
     }
     // CHOOSE A QUESTION (WITH THE SELECTED CATEGORY)
     $scope.setQuestion = function() {
-        socketProvider.setQuestion(mainService.currentPub, $scope.ques.currentQuestion);
+        socketService.setQuestion(mainService.currentPub, $scope.ques.currentQuestion);
         $location.path("quizmaster/" + mainService.currentPub + "/waitForAnswers");
     }
     // CLOSE THE QUESTION, GO TO CORRECTIONSCREEN
     $scope.closeQuestion = function() {
-        socketProvider.closeQuestion(mainService.currentPub);
+        socketService.closeQuestion(mainService.currentPub);
         $location.path("quizmaster/" + mainService.currentPub + "/selectCorrectAnswer");
     }
 
     // SEND THE CORRECTION THE THE TEAM
     $scope.sendCorrection = function(team) {
-        socketProvider.sendCorrection(mainService.currentPub, team.id, !team.status)
+        socketService.sendCorrection(mainService.currentPub, team.id, !team.status)
     }
     // SEND FINALT ANSWERS
     $scope.submitAnswers = function(){
-        socketProvider.submitFinalCorrection(mainService.currentPub);
+        socketService.submitFinalCorrection(mainService.currentPub);
     }
 
     $scope.resetAndStartGame = function(){
-        socketProvider.restartGame(mainService.currentPub);
+        socketService.restartGame(mainService.currentPub);
     }
 });

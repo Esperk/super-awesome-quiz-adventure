@@ -1,27 +1,27 @@
-quizApp.controller("teamGameController", function($scope, $http, $location, $routeParams, $timeout, socketProvider, noticeService, mainService) {
+quizApp.controller("teamGameController", function($scope, $http, $location, $routeParams, $timeout, socketService, noticeService, mainService) {
 
     // switch screen to the question
-    socketProvider.questionListenerForTeams(function(data) {
+    socketService.questionListenerForTeams(function(data) {
         $location.path('/team/' + mainService.currentPub + '/answerQuestion');
         mainService.currentQuestion.splice(0, 1);
         mainService.currentQuestion.push(data);
     });
 
-    socketProvider.closeQuestionListener(function(data) {
+    socketService.closeQuestionListener(function(data) {
         $location.path('/team/' + mainService.currentPub + '/waitForCorrection');
         mainService.currentQuestion.splice(0, 1);
     });
 
-    socketProvider.answeredCorrectly(function(data) {
+    socketService.answeredCorrectly(function(data) {
         console.log(data);
         $scope.answeredCorrectly = data;
     });
 
-    socketProvider.gameOverListener(function(data){
+    socketService.gameOverListener(function(data){
         $location.path("team/" + mainService.currentPub + "/gameOver");
     });
 
-    socketProvider.restartGameListener(function(data){
+    socketService.restartGameListener(function(data){
         $location.path("team/game/" + mainService.currentPub);
     });
 
@@ -33,14 +33,14 @@ quizApp.controller("teamGameController", function($scope, $http, $location, $rou
 
 
     $scope.submitAnswer = function() {
-        socketProvider.submitAnswer(mainService.currentPub, $scope.ans.answer);
+        socketService.submitAnswer(mainService.currentPub, $scope.ans.answer);
         noticeService.succes("Your answer is sent!");
 
         $scope.hasSent = true;
     }
     $scope.editAnswer = function() {
         console.log("hasSent: " + $scope.hasSent);
-        socketProvider.changeAnswer(mainService.currentPub);
+        socketService.changeAnswer(mainService.currentPub);
         $scope.hasSent = false;
     }
 

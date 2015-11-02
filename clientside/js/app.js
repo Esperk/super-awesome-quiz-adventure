@@ -1,4 +1,4 @@
-var quizApp = angular.module("quizApp", ["ngRoute", 'ngAnimate', 'socketProvider', 'noticeService', 'mainService']);
+var quizApp = angular.module("quizApp", ["ngRoute", 'ngAnimate', 'socketService', 'noticeService', 'mainService']);
 
 quizApp.config(['$routeProvider',
     function($routeProvider, $locationProvider) {

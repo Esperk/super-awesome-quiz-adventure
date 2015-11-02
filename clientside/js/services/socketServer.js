@@ -1,27 +1,27 @@
-var socketProvider = angular.module("socketProvider", []);
+var socketService = angular.module("socketService", []);
 
-socketProvider.factory("socketProvider", function($rootScope) {
+socketService.factory("socketService", function($rootScope) {
     var socket = io.connect();
 
-    var socketProvider = {};
+    var socketService = {};
     // open a gameroom
-    socketProvider.startSocketServer = function(pubname) {
+    socketService.startSocketServer = function(pubname) {
         socket.emit('create room', pubname);
         console.log("new room created for " + pubname);
     }
     // join pub with the scoreboard
-    socketProvider.joinRoomScoreboard = function(pubname) {
+    socketService.joinRoomScoreboard = function(pubname) {
         socket.emit('scoreboard join', pubname);
         console.log("ROOM JOINED AS SCOREBOARD " + pubname);
     }
     // asign to a pub with a team
-    socketProvider.addTeam = function(game, teamname, callback) {
+    socketService.addTeam = function(game, teamname, callback) {
         socket.emit('add team', game, teamname);
         console.log("TEAM ADDED! " + teamname);
     }
 
     // get the updated array with new teams
-    socketProvider.teamListener = function(callback) {
+    socketService.teamListener = function(callback) {
         socket.on('new team', function() {
             var args = arguments;
             $rootScope.$apply(function() {
@@ -29,7 +29,7 @@ socketProvider.factory("socketProvider", function($rootScope) {
             });
         });
     }
-    socketProvider.getTeamID = function(callback){
+    socketService.getTeamID = function(callback){
         socket.on('added team', function(){
             var args = arguments;
             $rootScope.$apply(function () {
@@ -38,7 +38,7 @@ socketProvider.factory("socketProvider", function($rootScope) {
         }); 
     }
     // get the updated array with new teams
-    socketProvider.updatedTeamsListener = function(callback) {
+    socketService.updatedTeamsListener = function(callback) {
         socket.on('update teams', function() {
             console.log('updated teams');
             var args = arguments;
@@ -48,7 +48,7 @@ socketProvider.factory("socketProvider", function($rootScope) {
         });
     }
     // get the array with the updated stats (if teams is approved) 
-    socketProvider.updatedStatsListener = function(callback) {
+    socketService.updatedStatsListener = function(callback) {
         socket.on('update stats', function() {
             var args = arguments;
             $rootScope.$apply(function() {
@@ -57,11 +57,11 @@ socketProvider.factory("socketProvider", function($rootScope) {
         });
     }
     // accept a team to a game
-    socketProvider.selectTeam = function(game, teamid, status) {
+    socketService.selectTeam = function(game, teamid, status) {
         socket.emit('select team', game, teamid, status);
     }
     // get the updated stat for teams
-    socketProvider.teamStatus = function(callback) {
+    socketService.teamStatus = function(callback) {
         socket.on('update teamstatus', function() {
             var args = arguments;
             $rootScope.$apply(function() {
@@ -70,7 +70,7 @@ socketProvider.factory("socketProvider", function($rootScope) {
         });
     }
     // if the game has started and the team is not approved
-    socketProvider.teamIsDeclined = function(callback) {
+    socketService.teamIsDeclined = function(callback) {
         socket.on('is declined', function() {
             var args = arguments;
             console.log("got data");
@@ -82,13 +82,13 @@ socketProvider.factory("socketProvider", function($rootScope) {
     }
 
     // call startgame, then 
-    socketProvider.startGame = function(game) {
+    socketService.startGame = function(game) {
         socket.emit('start game', game);
         console.log("GAME STARTED! " + game);
     }
 
     // teams will be received
-    socketProvider.categoryListener = function(callback) {
+    socketService.categoryListener = function(callback) {
         socket.on('get categories', function() {
             var args = arguments;
             $rootScope.$apply(function() {
@@ -98,7 +98,7 @@ socketProvider.factory("socketProvider", function($rootScope) {
     }
 
 
-    socketProvider.scoreboardTeamListener = function(callback) {
+    socketService.scoreboardTeamListener = function(callback) {
         socket.on('update teams', function() {
             var args = arguments;
             $rootScope.$apply(function() {
@@ -108,12 +108,12 @@ socketProvider.factory("socketProvider", function($rootScope) {
     }
 
     // call setCategory, then 
-    socketProvider.setCategory = function(game, category_id) {
+    socketService.setCategory = function(game, category_id) {
         socket.emit('choose category', game, category_id);
         console.log("Category chosen! ID: " + category_id);
     }
         // receive the sent questions
-    socketProvider.questionListener = function(callback) {
+    socketService.questionListener = function(callback) {
             socket.on('get questions', function() {
                 var args = arguments;
                 $rootScope.$apply(function() {
@@ -122,16 +122,16 @@ socketProvider.factory("socketProvider", function($rootScope) {
             });
         }
         // submit the chosen question
-    socketProvider.setQuestion = function(game, id) {
+    socketService.setQuestion = function(game, id) {
         socket.emit('choose question', game, id);
     }
 
-    socketProvider.closeQuestion = function(game) {
+    socketService.closeQuestion = function(game) {
         console.log("close question");
         socket.emit('close question', game);
     }
 
-    socketProvider.startGameListener = function(callback) {
+    socketService.startGameListener = function(callback) {
         socket.on('start game', function() {
             var args = arguments;
             $rootScope.$apply(function() {
@@ -139,7 +139,7 @@ socketProvider.factory("socketProvider", function($rootScope) {
             });
         });
     }
-    socketProvider.showQuestionListener = function(callback) {
+    socketService.showQuestionListener = function(callback) {
         socket.on('show question', function() {
             var args = arguments;
             $rootScope.$apply(function() {
@@ -148,7 +148,7 @@ socketProvider.factory("socketProvider", function($rootScope) {
         });
     }
 
-    socketProvider.showAnswersListener = function(callback) {
+    socketService.showAnswersListener = function(callback) {
         socket.on('show answers', function() {
             var args = arguments;
             $rootScope.$apply(function() {
@@ -158,7 +158,7 @@ socketProvider.factory("socketProvider", function($rootScope) {
     }
 
 
-    socketProvider.questionListenerForTeams = function(callback) {
+    socketService.questionListenerForTeams = function(callback) {
         socket.on('get question', function() {
             var args = arguments;
             $rootScope.$apply(function() {
@@ -167,7 +167,7 @@ socketProvider.factory("socketProvider", function($rootScope) {
         });
     }
 
-    socketProvider.closeQuestionListener = function(callback) {
+    socketService.closeQuestionListener = function(callback) {
         socket.on('close question', function() {
             console.log("question closed");
             var args = arguments;
@@ -178,7 +178,7 @@ socketProvider.factory("socketProvider", function($rootScope) {
     }
 
 
-    socketProvider.answerListener = function(callback) {
+    socketService.answerListener = function(callback) {
         socket.on('submit answer', function() {
             var args = arguments;
             console.log("got data");
@@ -189,15 +189,15 @@ socketProvider.factory("socketProvider", function($rootScope) {
         });
     }
 
-    socketProvider.submitAnswer = function(game, answer) {
+    socketService.submitAnswer = function(game, answer) {
         socket.emit('submit answer', game, answer);
     }
 
-    socketProvider.changeAnswer = function(game) {
+    socketService.changeAnswer = function(game) {
         socket.emit('change answer', game);
     }
 
-    socketProvider.isChangingAnswer = function(callback) {
+    socketService.isChangingAnswer = function(callback) {
         socket.on('change answer', function() {
             var args = arguments;
             console.log("got data");
@@ -208,7 +208,7 @@ socketProvider.factory("socketProvider", function($rootScope) {
         });
     }
 
-    socketProvider.getAnswerListener = function(callback) {
+    socketService.getAnswerListener = function(callback) {
         socket.on('get answers', function() {
             var args = arguments;
             $rootScope.$apply(function() {
@@ -217,16 +217,16 @@ socketProvider.factory("socketProvider", function($rootScope) {
         });
     }
 
-    socketProvider.sendCorrection = function(game, teamid, status) {
+    socketService.sendCorrection = function(game, teamid, status) {
         console.log(game, teamid,status);
         socket.emit('select answer', game, teamid, status);
     }
 
-    socketProvider.submitFinalCorrection = function(game) {
+    socketService.submitFinalCorrection = function(game) {
         socket.emit('submit answers', game);
     }
 
-    socketProvider.answeredCorrectly = function(callback) {
+    socketService.answeredCorrectly = function(callback) {
         console.log("trigger");
         socket.on('get correction', function() {
             console.log("triggered");
@@ -238,7 +238,7 @@ socketProvider.factory("socketProvider", function($rootScope) {
     }
 
     // GAME OVER 
-    socketProvider.gameOverListener = function(callback) {
+    socketService.gameOverListener = function(callback) {
         socket.on('game over', function() {
             var args = arguments;
             $rootScope.$apply(function() {
@@ -247,11 +247,11 @@ socketProvider.factory("socketProvider", function($rootScope) {
         });
     }
 
-    socketProvider.restartGame = function(game){
+    socketService.restartGame = function(game){
         socket.emit('restart game', game);        
     }
 
-    socketProvider.restartGameListener = function(callback){
+    socketService.restartGameListener = function(callback){
         socket.on('restart game', function() {
             var args = arguments;
             $rootScope.$apply(function() {
@@ -260,5 +260,5 @@ socketProvider.factory("socketProvider", function($rootScope) {
         });
     }
 
-    return socketProvider;
+    return socketService;
 });

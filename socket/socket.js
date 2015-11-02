@@ -179,7 +179,7 @@ module.exports = function(io) {
 
         socket.on('start game', function(game) {
             games[game].started = true;
-
+            console.log('get categories');
             // get the categories and send them to the gamemaster
             var categories = [];
             Category.find({}, function(err, res) {
@@ -190,7 +190,8 @@ module.exports = function(io) {
                 for (var i = 0; i < random.length; i++) {
                     categories.push(res[random[i]]);
                 }
-
+                console.log('categories are: ');
+                console.log(categories);
                 io.to(games[game].quizmaster).emit('get categories', categories);
             });
 
@@ -242,7 +243,7 @@ module.exports = function(io) {
                         console.log("these questions are selected: ");
                         console.log(res);
                         // AND SEND THE QUESTIONS
-
+                        io.to(games[game].quizmaster).emit('update stats', games[game].stats);
                         io.to(games[game].scoreboard).emit('update stats', games[game].stats);
                         io.to(games[game].quizmaster).emit('get questions', res);
                     });

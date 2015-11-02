@@ -1,4 +1,4 @@
-quizApp.controller("quizmasterSetupController", function($scope, $http, $location, $routeParams, $timeout, socketProvider, mainService, noticeService) {
+quizApp.controller("quizmasterSetupController", function($scope, $http, $location, $routeParams, $timeout, socketService, mainService, noticeService) {
 
 
     /*  =========================================================
@@ -23,7 +23,7 @@ quizApp.controller("quizmasterSetupController", function($scope, $http, $locatio
         .success(function(game) {
             noticeService.succes(game.result[1]);
             $scope.loading = false;
-            socketProvider.startSocketServer(mainService.currentPub);
+            socketService.startSocketServer(mainService.currentPub);
             $location.path("quizmaster/" + mainService.currentPub + "/setupGame");
         })
         .error(function(data, status) {
@@ -34,13 +34,13 @@ quizApp.controller("quizmasterSetupController", function($scope, $http, $locatio
 
     // step 3
     $scope.sendTeamApproval = function(team) {
-        socketProvider.selectTeam(mainService.currentPub, team.id, !team.selected);
+        socketService.selectTeam(mainService.currentPub, team.id, !team.selected);
     }
 
     // send an approval to the team
     $scope.approveAndStartGame = function() {
         $location.path("quizmaster/" + mainService.currentPub + "/chooseCategory");
-        socketProvider.startGame(mainService.currentPub);
+        socketService.startGame(mainService.currentPub);
     }
 
 });

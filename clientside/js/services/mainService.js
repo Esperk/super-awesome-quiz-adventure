@@ -1,6 +1,6 @@
 var mainService = angular.module("mainService", []);
 
-mainService.factory("mainService", function(socketProvider, $routeParams, $location) {
+mainService.factory("mainService", function(socketService, $routeParams, $location) {
 
     var mainService = {};
     
@@ -16,7 +16,7 @@ mainService.factory("mainService", function(socketProvider, $routeParams, $locat
         mainService.currentPub = $routeParams.pubname;
     }
     if (mainService.currentPub !== undefined && mainService.currentPub !== "") {
-        socketProvider.startSocketServer(mainService.currentPub);
+        socketService.startSocketServer(mainService.currentPub);
     }
 
     /* ==============================================================
@@ -24,18 +24,18 @@ mainService.factory("mainService", function(socketProvider, $routeParams, $locat
        ==============================================================
     */
     mainService.teams = [];
-    socketProvider.teamListener(function(data) {
+    socketService.teamListener(function(data) {
         mainService.teams.push(data);
     });
 
     mainService.questions = [];
-    socketProvider.questionListener(function(data) {
+    socketService.questionListener(function(data) {
         mainService.questions.splice(0, mainService.questions.length);
         mainService.questions.push(data);
     });
 
     mainService.categories = [];
-    socketProvider.categoryListener(function(data) {
+    socketService.categoryListener(function(data) {
         mainService.categories.splice(0, mainService.categories.length);
         mainService.categories = data;
     });
@@ -46,26 +46,26 @@ mainService.factory("mainService", function(socketProvider, $routeParams, $locat
        ==============================================================
     */
 
-    socketProvider.getTeamID(function(data){
+    socketService.getTeamID(function(data){
        // console.log(data);
        mainService.teamID = data;
     });
 
     mainService.approved = [false];
-    socketProvider.teamStatus(function(approved) {
+    socketService.teamStatus(function(approved) {
         // console.log("approved? : " + approved);
         mainService.approved.splice(0, 1);
         mainService.approved.push(approved);
     });
 
     mainService.isDeclined = [false];
-    socketProvider.teamIsDeclined(function(isDeclined) {
+    socketService.teamIsDeclined(function(isDeclined) {
         // console.log("isDeclined : " + isDeclined);
         mainService.isDeclined.splice(0, 1);
         mainService.isDeclined.push(isDeclined);
     });
     
-    socketProvider.isChangingAnswer(function(data) {
+    socketService.isChangingAnswer(function(data) {
         // console.log(data);
         mainService.teams.splice(0, mainService.teams.length);
         for (var i = 0; i < data.length; i++) {
@@ -73,7 +73,7 @@ mainService.factory("mainService", function(socketProvider, $routeParams, $locat
         };
     });
 
-    socketProvider.restartGameListener(function(data){
+    socketService.restartGameListener(function(data){
         mainService.isDeclined.splice(0,1);
         mainService.approved.splice(0,1);
         mainService.teams.splice(0,1);
@@ -84,7 +84,7 @@ mainService.factory("mainService", function(socketProvider, $routeParams, $locat
        ==============================================================
     */
     mainService.updatedTeams = [];
-    socketProvider.updatedTeamsListener(function(data) {
+    socketService.updatedTeamsListener(function(data) {
         mainService.updatedTeams.splice(0, mainService.updatedTeams.length);
         for (var i = 0; i < data.length; i++) {
             mainService.updatedTeams.push(data[i]);
@@ -94,7 +94,7 @@ mainService.factory("mainService", function(socketProvider, $routeParams, $locat
     });
 
     mainService.updatedStats = [];
-    socketProvider.updatedStatsListener(function(data) {
+    socketService.updatedStatsListener(function(data) {
         console.log("update stats: ");
         console.log(data);
         mainService.updatedStats = data;

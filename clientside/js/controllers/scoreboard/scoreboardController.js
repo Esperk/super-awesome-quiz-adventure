@@ -1,24 +1,24 @@
-quizApp.controller("scoreboardController", function($scope, $http, $routeParams, $location, socketProvider, noticeService, mainService) {
+quizApp.controller("scoreboardController", function($scope, $http, $routeParams, $location, socketService, noticeService, mainService) {
 
     $scope.teams = mainService.updatedTeams;
     $scope.stats = mainService.updatedStats;
     $scope.currentPub = mainService.currentPub;
 
     // switch to scoreboard screen
-    socketProvider.startGameListener(function(data) {
+    socketService.startGameListener(function(data) {
         $location.path('/scoreboard/' + mainService.currentPub + '/score');
     });
 
-    socketProvider.showQuestionListener(function(data) {
+    socketService.showQuestionListener(function(data) {
         $location.path('/scoreboard/' + mainService.currentPub + '/question');
     });
 
-    socketProvider.showAnswersListener(function(data) {
+    socketService.showAnswersListener(function(data) {
         $location.path('/scoreboard/' + mainService.currentPub + '/answers');
     });
 
 
-    socketProvider.restartGameListener(function(data){
+    socketService.restartGameListener(function(data){
         $location.path("/scoreboard/" + mainService.currentPub + "/setup");
     });
 
@@ -30,7 +30,7 @@ quizApp.controller("scoreboardController", function($scope, $http, $routeParams,
                 .success(function(game) {
                     $location.path('/scoreboard/' + $scope.currentPub + '/setup/');
                     noticeService.succes("Welkom bij " + $scope.currentPub);
-                    socketProvider.joinRoomScoreboard(mainService.currentPub);
+                    socketService.joinRoomScoreboard(mainService.currentPub);
                 })
                 .error(function(data, status) {
                     noticeService.error("Spel bestaat niet!");

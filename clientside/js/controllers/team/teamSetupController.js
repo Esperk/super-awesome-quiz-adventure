@@ -1,4 +1,4 @@
-quizApp.controller("teamSetupController", function($scope, $http, $location, $routeParams, $timeout, socketProvider, noticeService, mainService) {
+quizApp.controller("teamSetupController", function($scope, $http, $location, $routeParams, $timeout, socketService, noticeService, mainService) {
 
     $scope.showForm = true;
 
@@ -24,13 +24,13 @@ quizApp.controller("teamSetupController", function($scope, $http, $location, $ro
 
     // step 2
     $scope.teamSignUp = function() {
-        socketProvider.addTeam(mainService.currentPub, $scope.team.teamName);
+        socketService.addTeam(mainService.currentPub, $scope.team.teamName);
         noticeService.succes("Welkom, " + $scope.team.teamName);
         $scope.showForm = false;
     }
     
     // switch screen to the question
-    socketProvider.questionListenerForTeams(function(data) {
+    socketService.questionListenerForTeams(function(data) {
         $location.path('/team/' + mainService.currentPub + '/answerQuestion');
         mainService.currentQuestion.splice(0, 1);
         mainService.currentQuestion.push(data);
