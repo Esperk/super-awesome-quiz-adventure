@@ -22,6 +22,10 @@ quizApp.controller("scoreboardController", function($scope, $http, $routeParams,
         $location.path("/scoreboard/" + mainService.currentPub + "/setup");
     });
 
+    socketProvider.restartGameListener(function(data){
+        $location.path("scoreboard/" + mainService.currentPub + "/setup");
+    });
+
     $scope.enterPub = function() {
         if ($scope.pub.pubname !== undefined) {
             mainService.currentPub = $scope.pub.pubname;
