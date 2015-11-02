@@ -247,5 +247,18 @@ socketProvider.factory("socketProvider", function($rootScope) {
         });
     }
 
+    socketProvider.restartGame = function(game){
+        socket.emit('restart game', game);        
+    }
+
+    socketProvider.restartGameListener = function(callback){
+        socket.on('restart game', function() {
+            var args = arguments;
+            $rootScope.$apply(function() {
+                callback.apply(socket, args);
+            });
+        });
+    }
+
     return socketProvider;
 });

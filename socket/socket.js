@@ -1,7 +1,7 @@
 var mongoose = require('mongoose'),
-Game = require('../models/game'),
-Question = require('../models/questions'),
-Category = require('../models/categories');
+    Game = require('../models/game'),
+    Question = require('../models/questions'),
+    Category = require('../models/categories');
 
 function getRandom(amount, max) {
     // get random numbers for categories
@@ -32,25 +32,25 @@ function objectToArray(object) {
 }
 
 function saveGame(id, game) {
-    Game.findOneAndUpdate(
-            {_id: id},
-            {
-                'stats.question_count': game.stats.question_count,
-                'stats.round': game.stats.round,
-                'stats.asked': game.stats.asked,
-                'stats.maxquestions': game.stats.maxquestions,
-                'stats.maxrounds': game.stats.maxrounds,
-                'stats.finished' : (game.stats.maxrounds === game.stats.round),
-                'started' : game.started,
-                'scoreboard' : game.scoreboard,
-                'quizmaster' : game.quizmaster
-            }, function(err, res) {
-                if (err) {
-                    console.log('Error: ' + err.message);
-                } else {
-                    console.log('succesfully saved ' + id);
-                    saveTeams(id, game.teams);
-                }
+    Game.findOneAndUpdate({
+        _id: id
+    }, {
+        'stats.question_count': game.stats.question_count,
+        'stats.round': game.stats.round,
+        'stats.asked': game.stats.asked,
+        'stats.maxquestions': game.stats.maxquestions,
+        'stats.maxrounds': game.stats.maxrounds,
+        'stats.finished': (game.stats.maxrounds === game.stats.round),
+        'started': game.started,
+        'scoreboard': game.scoreboard,
+        'quizmaster': game.quizmaster
+    }, function(err, res) {
+        if (err) {
+            console.log('Error: ' + err.message);
+        } else {
+            console.log('succesfully saved ' + id);
+            saveTeams(id, game.teams);
+        }
     });
 }
 
@@ -65,7 +65,13 @@ function saveTeams(id, teams) {
             }
             console.log('the new team = ');
             console.log(newteam);
-            Game.findOneAndUpdate( {_id: id},{$push: {teams: newteam}}, function(err, res) {
+            Game.findOneAndUpdate({
+                _id: id
+            }, {
+                $push: {
+                    teams: newteam
+                }
+            }, function(err, res) {
                 if (err) {
                     console.log('Error: ' + err.message);
                 } else {
@@ -73,7 +79,7 @@ function saveTeams(id, teams) {
                 }
             });
         }
-    }    
+    }
 }
 
 module.exports = function(io) {
@@ -95,7 +101,7 @@ module.exports = function(io) {
                     category: null,
                     asked: [],
                     maxrounds: 3,
-                    maxquestions: 2 
+                    maxquestions: 2
                 },
                 teams: {},
                 scoreboard: null,
@@ -115,7 +121,7 @@ module.exports = function(io) {
          * game: game name (id).
          * name: the name of the team.
          */
-         socket.on('add team', function(game, name) {
+        socket.on('add team', function(game, name) {
             var newteam = {
                 id: socket.id,
                 name: name,
@@ -145,7 +151,7 @@ module.exports = function(io) {
          * teamid: teamid
          * status: selected/unselected (true or false)
          */
-         socket.on('select team', function(game, teamid, status) {
+        socket.on('select team', function(game, teamid, status) {
 
             games[game].teams[teamid].selected = status;
 
@@ -171,7 +177,7 @@ module.exports = function(io) {
          * 
          */
 
-         socket.on('start game', function(game) {
+        socket.on('start game', function(game) {
             games[game].started = true;
 
             // get the categories and send them to the gamemaster
@@ -197,7 +203,7 @@ module.exports = function(io) {
                     io.to(games[game].quizmaster).emit('update teams', objectToArray(games[game].teams));
                     io.to(games[game].quizmaster).emit('submit answer');
                 }
-            
+
             }
             io.to(games[game].scoreboard).emit('update teams', objectToArray(games[game].teams));
             io.to(games[game].scoreboard).emit('update stats', games[game].stats);
@@ -230,9 +236,9 @@ module.exports = function(io) {
 
                 // find random questions..
                 Question.find(citeria)
-                .limit(4)
-                .skip(Math.floor(Math.random() * c))
-                .exec(function(err, res) {
+                    .limit(4)
+                    .skip(Math.floor(Math.random() * c))
+                    .exec(function(err, res) {
                         console.log("these questions are selected: ");
                         console.log(res);
                         // AND SEND THE QUESTIONS
@@ -340,7 +346,7 @@ module.exports = function(io) {
             }
 
             games[game].teams = {};
-
+            
             io.to(games[game].quizmaster).emit('update teams', objectToArray(games[game].teams));
             io.to(games[game].quizmaster).emit('update stats', games[game].stats);
             io.to(games[game].scoreboard).emit('update teams', objectToArray(games[game].teams));
@@ -354,24 +360,24 @@ module.exports = function(io) {
             console.log('submit answers, let the magic happen!');
             // empty answer values and shit
             for (var k in games[game].teams) {
-                
+
                 console.log("the current round = " + games[game].stats.round + "and the rounds from this team:");
                 console.log(games[game].teams[k].rounds);
-                if(!games[game].teams[k].rounds[games[game].stats.round]) {
+                if (!games[game].teams[k].rounds[games[game].stats.round]) {
                     var object = {
-                        correctanswers : 0
+                        correctanswers: 0
                     }
                     games[game].teams[k].rounds[games[game].stats.round] = object;
-                } 
+                }
 
-                if(games[game].teams[k].correctanswer) {
+                if (games[game].teams[k].correctanswer) {
                     games[game].teams[k].rounds[games[game].stats.round].correctanswers++;
                 }
-            
+
                 // reset values!
                 games[game].teams[k].currentanswer = '';
                 games[game].teams[k].editing = false;
-                games[game].teams[k].correctanswer= null;
+                games[game].teams[k].correctanswer = null;
 
                 console.log("the rounds object: ");
                 console.log(games[game].teams[k].rounds);
@@ -382,14 +388,16 @@ module.exports = function(io) {
             console.log("current question: " + games[game].stats.question_count + " max questions: " + games[game].maxquestions);
             console.log("current round: " + games[game].stats.round + " max rounds: " + games[game].maxrounds);
 
-            if(games[game].stats.question_count === games[game].stats.maxquestions) {
+            if (games[game].stats.question_count === games[game].stats.maxquestions) {
                 console.log("round done!");
                 games[game].stats.question_count = 0;
                 // assign round points!
                 sortable = [];
                 for (var k in games[game].teams) {
                     sortable.push([k, games[game].teams[k].rounds[games[game].stats.round].correctanswers]);
-                    sortable.sort(function(a, b){return a[1] - b[1]});
+                    sortable.sort(function(a, b) {
+                        return a[1] - b[1]
+                    });
                     sortable.reverse();
                 }
                 // sortable array:
@@ -405,13 +413,13 @@ module.exports = function(io) {
                 // console.log("the sortable array: ");
                 // console.log(sortable);
 
-                for(var i=0;i<sortable.length; i++) {
+                for (var i = 0; i < sortable.length; i++) {
                     console.log("the following team will get round points : " + sortable[i][0]);
                     console.log("here is the teams object (again): ");
                     console.log(games[game].teams);
                     var j = i;
 
-                    switch(j) {
+                    switch (j) {
                         case 0: // NUMBER 1!! gets 4 points.
                             games[game].teams[sortable[i][0]].roundpoints += 4;
                             break;
@@ -430,7 +438,7 @@ module.exports = function(io) {
                 console.log(games[game].teams);
 
                 // is the game end???
-                if(games[game].stats.round === games[game].stats.maxrounds) {
+                if (games[game].stats.round === games[game].stats.maxrounds) {
                     console.log("game is over! final score =");
                     console.log(games[game]);
 
@@ -447,7 +455,7 @@ module.exports = function(io) {
                         io.to(k).emit('game over');
                     }
                     saveGame(game, games[game]);
-                    
+
                 } else {
                     //get categories!
                     console.log("get new categories. game is not over yet!");
@@ -487,9 +495,9 @@ module.exports = function(io) {
 
                     // find random questions..
                     Question.find(criteria)
-                    .limit(4)
-                    .skip(Math.floor(Math.random() * c))
-                    .exec(function(err, res) {
+                        .limit(4)
+                        .skip(Math.floor(Math.random() * c))
+                        .exec(function(err, res) {
                             // console.log(res);
                             // AND SEND THE QUESTIONS
                             io.to(games[game].quizmaster).emit('update teams', objectToArray(games[game].teams));

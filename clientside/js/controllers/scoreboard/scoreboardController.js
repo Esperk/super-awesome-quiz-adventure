@@ -17,8 +17,9 @@ quizApp.controller("scoreboardController", function($scope, $http, $routeParams,
         $location.path('/scoreboard/' + mainService.currentPub + '/answers');
     });
 
-    socketProvider.gameOverListener(function(data){
-        $location.path("scoreboard/" + mainService.currentPub + "/gameOver");
+
+    socketProvider.restartGameListener(function(data){
+        $location.path("/scoreboard/" + mainService.currentPub + "/setup");
     });
 
     $scope.enterPub = function() {

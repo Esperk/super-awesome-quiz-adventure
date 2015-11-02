@@ -13,6 +13,10 @@ quizApp.controller("quizmasterGameController", function($scope, $http, $location
         $location.path("quizmaster/" + mainService.currentPub + "/gameOver");
     });
 
+    socketProvider.restartGameListener(function(data){
+        $location.path('/quizmaster/'+mainService.currentPub+'/setupGame/');
+    });
+
 
     /*  =========================================================
                   SOME VARIABLES FOR THE VIEWS
@@ -61,6 +65,6 @@ quizApp.controller("quizmasterGameController", function($scope, $http, $location
     }
 
     $scope.resetAndStartGame = function(){
-        $location.path('/quizmaster/'+mainService.currentPub+'/setupGame/');
+        socketProvider.restartGame(mainService.currentPub);
     }
 });

@@ -73,6 +73,12 @@ mainService.factory("mainService", function(socketProvider, $routeParams, $locat
         };
     });
 
+    socketProvider.restartGameListener(function(data){
+        mainService.isDeclined.splice(0,1);
+        mainService.approved.splice(0,1);
+        mainService.teams.splice(0,1);
+    });
+
     /* ==============================================================
        ======================= SCOREBOARD LISTENERS =======================
        ==============================================================
