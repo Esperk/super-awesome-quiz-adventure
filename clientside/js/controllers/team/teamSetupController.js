@@ -18,6 +18,7 @@ quizApp.controller("teamSetupController", function($scope, $http, $location, $ro
                     noticeService.error("bestaat niet!");
                 });
         } else {
+            console.log("error");
             noticeService.error("Enter a valid pubname");
         }
     }
@@ -25,9 +26,22 @@ quizApp.controller("teamSetupController", function($scope, $http, $location, $ro
     // step 2
     $scope.teamSignUp = function() {
         socketService.addTeam(mainService.currentPub, $scope.team.teamName);
-        noticeService.succes("Welkom, " + $scope.team.teamName);
         $scope.showForm = false;
+        noticeService.succes("Welkom, " + $scope.team.teamName)
     }
+    // uniqueness teamname
+    // socketService.teamAlreadyExistsListener(function(data) {
+    //     console.log(data);
+    //     if(data === false){
+    //         $scope.showForm = false;
+    //         noticeService.succes("Welkom, " + $scope.team.teamName);
+    //     }
+    //     else{
+    //         noticeService.error("Teamnaam bestaat al!");
+    //     }
+    // });
+
+
     
     // switch screen to the question
     socketService.questionListenerForTeams(function(data) {

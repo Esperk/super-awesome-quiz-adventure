@@ -7,6 +7,7 @@ noticeService.factory("noticeService", function() {
         $(element).addClass('errorInput');
     }
     noticeService.error = function(errormessage) {
+        console.log("errormessage " + errormessage);
         $('body').append("<div class='error'>" + errormessage + "</div>");
     }
     noticeService.succes = function(notice) {

@@ -37,6 +37,18 @@ socketService.factory("socketService", function($rootScope) {
             });
         }); 
     }
+
+    // teamname already in use
+    socketService.teamAlreadyExistsListener = function(callback) {
+        socket.on('team exists', function() {
+            console.log("exists: ");
+            var args = arguments;
+            $rootScope.$apply(function() {
+                callback.apply(socket, args);
+            });
+        });
+    }
+
     // get the updated array with new teams
     socketService.updatedTeamsListener = function(callback) {
         socket.on('update teams', function() {
