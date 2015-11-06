@@ -40,7 +40,7 @@ socketService.factory("socketService", function($rootScope) {
 
     // teamname already in use
     socketService.teamAlreadyExistsListener = function(callback) {
-        socket.on('team exists', function() {
+        socket.on('team already exists', function() {
             console.log("exists: ");
             var args = arguments;
             $rootScope.$apply(function() {
