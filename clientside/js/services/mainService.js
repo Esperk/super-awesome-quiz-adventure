@@ -74,9 +74,9 @@ mainService.factory("mainService", function(socketService, $routeParams, $locati
     });
 
     socketService.restartGameListener(function(data){
-        mainService.isDeclined.splice(0,1);
-        mainService.approved.splice(0,1);
-        mainService.teams.splice(0,1);
+        mainService.isDeclined.splice(0,mainService.isDeclined.length);
+        mainService.approved.splice(0,mainService.approved.length);
+        mainService.teams.splice(0,mainService.teams.length);
     });
 
     /* ==============================================================

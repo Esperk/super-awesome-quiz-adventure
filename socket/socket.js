@@ -122,25 +122,39 @@ module.exports = function(io) {
          * name: the name of the team.
          */
         socket.on('add team', function(game, name) {
-            var newteam = {
-                id: socket.id,
-                name: name,
-                selected: false,
-                currentanswer: "",
-                editing: false,
-                correctanswer: null,
-                roundpoints: 0,
-                rounds: {}
-            };
+            var nameavailable = true;
+            for (var k in games[game].teams) {
+                if (games[game].teams[k].name == name) {
+                    nameavailable = false;   
+                }
+            }
 
-            games[game].teams[socket.id] = newteam;
+            if(nameavailable) {
+                var newteam = {
+                    id: socket.id,
+                    name: name,
+                    selected: false,
+                    currentanswer: "",
+                    editing: false,
+                    correctanswer: null,
+                    roundpoints: 0,
+                    rounds: {}
+                };
 
-            // send the new team!
-            io.to(game).emit('new team', newteam);
+                games[game].teams[socket.id] = newteam;
 
-            if (games[game].scoreboard) {
-                console.log('teams updated, send to scoreboard');
-                io.to(games[game].scoreboard).emit('update teams', objectToArray(games[game].teams));
+                // send the new team!
+                io.to(game).emit('new team', newteam);
+                console.log('team doesn\'t exists');
+                io.to(socket.id).emit('team already exists', [false]);
+
+                if (games[game].scoreboard) {
+                    console.log('teams updated, send to scoreboard');
+                    io.to(games[game].scoreboard).emit('update teams', objectToArray(games[game].teams));
+                }
+            } else {
+                console.log('team does exist already..');
+                io.to(socket.id).emit('team already exists', [true]);
             }
             // console.log("new team added heres the complete game object:");
             // console.log(games[game]);
@@ -204,7 +218,6 @@ module.exports = function(io) {
                     io.to(games[game].quizmaster).emit('update teams', objectToArray(games[game].teams));
                     io.to(games[game].quizmaster).emit('submit answer');
                 }
-
             }
             io.to(games[game].scoreboard).emit('update teams', objectToArray(games[game].teams));
             io.to(games[game].scoreboard).emit('update stats', games[game].stats);

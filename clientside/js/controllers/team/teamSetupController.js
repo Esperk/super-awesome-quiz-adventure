@@ -30,16 +30,16 @@ quizApp.controller("teamSetupController", function($scope, $http, $location, $ro
         noticeService.succes("Welkom, " + $scope.team.teamName)
     }
     // uniqueness teamname
-    // socketService.teamAlreadyExistsListener(function(data) {
-    //     console.log(data);
-    //     if(data === false){
-    //         $scope.showForm = false;
-    //         noticeService.succes("Welkom, " + $scope.team.teamName);
-    //     }
-    //     else{
-    //         noticeService.error("Teamnaam bestaat al!");
-    //     }
-    // });
+    socketService.teamAlreadyExistsListener(function(data) {
+        console.log(data);
+        if(data === false){
+            $scope.showForm = false;
+            noticeService.succes("Welkom, " + $scope.team.teamName);
+        }
+        else{
+            noticeService.error("Teamnaam bestaat al!");
+        }
+    });
 
 
     
